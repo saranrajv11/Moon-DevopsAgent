@@ -1,0 +1,83 @@
+# Template for the DEV -> QA promotion pipeline.
+# Copy to .github/workflows/ in your Salesforce repo, one file per promotion hop.
+# The copilot triggers this via workflow_dispatch; it never deploys metadata itself.
+name: Salesforce DEV to QA
+
+on:
+  workflow_dispatch:
+    inputs:
+      feature_id:    { description: "Four-digit Feature ID", required: true }
+      commit_sha:    { description: "Commit to deploy",      required: true }
+      target_env:    { description: "Target environment",    required: true }
+      requested_by:  { description: "Requesting user",       required: true }
+
+concurrency:
+  # One deployment per environment at a time.
+  group: sf-deploy-${{ github.event.inputs.target_env }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: QA          # GitHub environment protection rules apply here
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.commit_sha }}
+          fetch-depth: 0
+
+      - name: Install Salesforce CLI
+        run: npm install --global @salesforce/cli
+
+      - name: Authenticate to QA org
+        env:
+          SF_AUTH_URL: ${{ secrets.SF_QA_AUTH_URL }}
+        run: |
+          echo "$SF_AUTH_URL" > auth.txt
+          sf org login sfdx-url --sfdx-url-file auth.txt --alias target
+          rm auth.txt
+
+      - name: Validate (check-only deploy with tests)
+        id: validate
+        run: |
+          sf project deploy validate \
+            --source-dir force-app \
+            --target-org target \
+            --test-level RunLocalTests \
+            --json > validate.json
+          cat validate.json
+
+      - name: Deploy
+        id: deploy
+        run: |
+          sf project deploy start \
+            --source-dir force-app \
+            --target-org target \
+            --test-level RunLocalTests \
+            --json > deploy.json
+          cat deploy.json
+
+      - name: Report result to copilot
+        if: always()
+        env:
+          COPILOT_URL: ${{ secrets.COPILOT_WEBHOOK_URL }}
+          COPILOT_TOKEN: ${{ secrets.COPILOT_WEBHOOK_TOKEN }}
+        run: |
+          STATUS="${{ job.status == 'success' && 'succeeded' || 'failed' }}"
+          ERRORS=$(jq -r '.result.details.componentFailures // [] | map("\(.fullName): \(.problem)") | join("\n")' deploy.json 2>/dev/null || echo "")
+          TESTS=$(jq -r '.result.details.runTestResult // {} | tojson' deploy.json 2>/dev/null || echo "{}")
+          COMPONENTS=$(jq -r '.result.details.componentSuccesses // [] | map(.fullName) | join("\n")' deploy.json 2>/dev/null || echo "")
+          jq -n \
+            --arg id "github-actions:${{ github.run_id }}" \
+            --arg fid "${{ github.event.inputs.feature_id }}" \
+            --arg env "${{ github.event.inputs.target_env }}" \
+            --arg st "$STATUS" \
+            --arg sha "${{ github.event.inputs.commit_sha }}" \
+            --arg url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --arg err "$ERRORS" --arg tests "$TESTS" --arg comp "$COMPONENTS" \
+            '{pipeline_run_id:$id, feature_id:$fid, target_environment:$env, status:$st,
+              commit_sha:$sha, logs_url:$url, error_details:$err, test_results:$tests, components:$comp}' \
+          | curl -sS -X POST "$COPILOT_URL/api/webhooks/pipeline" \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer $COPILOT_TOKEN" \
+              --data @-

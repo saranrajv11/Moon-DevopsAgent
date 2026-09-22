@@ -1,0 +1,126 @@
+<template>
+    <!-- .split opens immediately inside the root div, before any hero content.
+         Anything above it pins the side panel down. -->
+    <div class="root">
+        <div class="split">
+
+            <!-- ============ LEFT: conversation ============ -->
+            <div class="col-chat">
+                <div class="panel">
+                    <div class="panel-head">
+                        <span class="head-title">Moon</span>
+                        <span class="head-sub">{providerLabel}</span>
+                    </div>
+
+                    <div class="transcript" lwc:ref="transcript">
+                        <template if:false={hasMessages}>
+                            <div class="empty">
+                                <div class="empty-title">Ask about a feature</div>
+                                <template for:each={sampleQuestions} for:item="q">
+                                    <div key={q} class="sample" data-q={q} onclick={handleSample}>{q}</div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <template for:each={messages} for:item="m">
+                            <div key={m.id} class={m.rowClass}>
+                                <div class={m.bubbleClass}>
+                                    <div class="who">{m.who}</div>
+                                    <template for:each={m.blocks} for:item="b">
+                                        <div key={b.id} class={b.className}>{b.text}</div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
+                        <template if:true={isWorking}>
+                            <div class="row-agent">
+                                <div class="bubble-agent">
+                                    <div class="who">Copilot</div>
+                                    <template for:each={activity} for:item="a">
+                                        <div key={a.name} class="tool-line">
+                                            <span class="tool-icon">{a.icon}</span>
+                                            <span class="tool-name">{a.name}</span>
+                                        </div>
+                                    </template>
+                                    <div class="thinking">Working…</div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Confirmation is a real in-flow element, never an overlay. -->
+                    <template if:true={pendingConfirmation}>
+                        <div class="confirm">
+                            <div class="confirm-title">Deployment requires your confirmation</div>
+                            <template for:each={pendingConfirmation.lines} for:item="line">
+                                <div key={line.label} class="crow">
+                                    <span class="w35 ckey">{line.label}</span>
+                                    <span class="w65 cval">{line.value}</span>
+                                </div>
+                            </template>
+                            <div class="confirm-actions">
+                                <button class="btn-danger" onclick={handleConfirmDeploy}>Yes, deploy</button>
+                                <button class="btn-plain" onclick={handleCancelDeploy}>Cancel</button>
+                            </div>
+                        </div>
+                    </template>
+
+                    <div class="composer">
+                        <input class="input" type="text" value={draft}
+                               placeholder="What's the status of feature 0001?"
+                               onkeyup={handleKeyUp} oninput={handleInput}
+                               disabled={isWorking} />
+                        <button class="btn-send" onclick={handleSend} disabled={sendDisabled}>Send</button>
+                    </div>
+
+                    <template if:true={errorMessage}>
+                        <div class="error">{errorMessage}</div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- ============ RIGHT: feature panel (sibling, not nested) ============ -->
+            <div class="col-side">
+                <div class="panel side-panel">
+                    <div class="panel-head">
+                        <span class="head-title">Feature</span>
+                    </div>
+
+                    <div class="side-body">
+                        <div class="lookup">
+                            <input class="input-sm" type="text" value={featureInput}
+                                   placeholder="0001" oninput={handleFeatureInput} />
+                            <button class="btn-plain-sm" onclick={handleLoadFeature}>Load</button>
+                        </div>
+
+                        <template if:true={summary}>
+                            <div class="s-title">{summary.name} · {summary.title}</div>
+                            <div class="s-overall">{summary.overallStatus}</div>
+
+                            <div class="srow"><span class="w40 skey">Branch</span><span class="w60 sval">{summary.branch}</span></div>
+                            <div class="srow"><span class="w40 skey">Status</span><span class="w60 sval">{summary.status}</span></div>
+                            <div class="srow"><span class="w40 skey">Commits</span><span class="w60 sval">{summary.commitCount}</span></div>
+                            <div class="srow"><span class="w40 skey">Latest</span><span class="w60 sval">{shortSha}</span></div>
+                            <div class="srow"><span class="w40 skey">PR</span><span class="w60 sval">{prLabel}</span></div>
+
+                            <div class="s-sub">Environments</div>
+                            <template for:each={summary.environments} for:item="e">
+                                <div key={e.label} class="erow">
+                                    <span class="w15 eicon">{e.icon}</span>
+                                    <span class="w30 elabel">{e.label}</span>
+                                    <span class="w55 estatus">{e.status}</span>
+                                </div>
+                            </template>
+                        </template>
+
+                        <template if:true={summaryNotFound}>
+                            <div class="s-empty">No User Story with that Feature ID.</div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</template>

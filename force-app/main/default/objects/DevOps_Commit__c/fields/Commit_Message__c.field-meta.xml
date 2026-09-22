@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Commit_Message__c</fullName>
+    <label>Commit Message</label>
+    <length>32768</length>
+    <visibleLines>4</visibleLines>
+    <required>false</required>
+    <type>LongTextArea</type>
+</CustomField>

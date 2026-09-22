@@ -1,6 +1,6 @@
 {
   "packageDirectories": [{ "path": "force-app", "default": true }],
-  "name": "Moon-DevopsAgent",
+  "name": "sfdevops-copilot",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "67.0"

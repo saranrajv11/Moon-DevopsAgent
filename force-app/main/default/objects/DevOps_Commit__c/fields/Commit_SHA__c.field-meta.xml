@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Commit_SHA__c</fullName>
+    <externalId>true</externalId>
+    <unique>true</unique>
+    <caseSensitive>true</caseSensitive>
+    <label>Commit SHA</label>
+    <length>40</length>
+    <required>true</required>
+    <type>Text</type>
+</CustomField>

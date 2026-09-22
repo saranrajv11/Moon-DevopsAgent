@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <label>Status</label>
+    <required>false</required>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+                <value>
+                    <fullName>Draft</fullName>
+                    <default>true</default>
+                    <label>Draft</label>
+                </value>
+                <value>
+                    <fullName>In Development</fullName>
+                    <default>false</default>
+                    <label>In Development</label>
+                </value>
+                <value>
+                    <fullName>In Review</fullName>
+                    <default>false</default>
+                    <label>In Review</label>
+                </value>
+                <value>
+                    <fullName>Ready for QA</fullName>
+                    <default>false</default>
+                    <label>Ready for QA</label>
+                </value>
+                <value>
+                    <fullName>In QA</fullName>
+                    <default>false</default>
+                    <label>In QA</label>
+                </value>
+                <value>
+                    <fullName>Ready for Stage</fullName>
+                    <default>false</default>
+                    <label>Ready for Stage</label>
+                </value>
+                <value>
+                    <fullName>Ready for Prod</fullName>
+                    <default>false</default>
+                    <label>Ready for Prod</label>
+                </value>
+                <value>
+                    <fullName>Released</fullName>
+                    <default>false</default>
+                    <label>Released</label>
+                </value>
+                <value>
+                    <fullName>Blocked</fullName>
+                    <default>false</default>
+                    <label>Blocked</label>
+                </value>
+        </valueSetDefinition>
+    </valueSet>
+    <type>Picklist</type>
+    <trackHistory>true</trackHistory>
+</CustomField>

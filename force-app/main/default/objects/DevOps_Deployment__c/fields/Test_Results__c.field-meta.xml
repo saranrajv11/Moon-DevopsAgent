@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Test_Results__c</fullName>
+    <label>Test Results</label>
+    <length>32768</length>
+    <visibleLines>8</visibleLines>
+    <required>false</required>
+    <type>LongTextArea</type>
+</CustomField>

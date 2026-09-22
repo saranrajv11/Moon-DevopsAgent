@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Developer__c</fullName>
+    <label>Developer</label>
+    <referenceTo>User</referenceTo>
+    <relationshipLabel>DevOps User Stories</relationshipLabel>
+    <relationshipName>DevOps_User_Stories</relationshipName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

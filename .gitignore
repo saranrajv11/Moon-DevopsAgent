@@ -1,0 +1,21 @@
+# Secrets — never commit these
+.env
+.env.local
+server/.env
+server/secrets/
+*.pem
+*.key
+*.crt
+
+# Build output and dependencies
+node_modules/
+server/dist/
+server/node_modules/
+
+# Salesforce CLI local state
+.sf/
+.sfdx/
+retr_tmp/
+
+# OS
+.DS_Store

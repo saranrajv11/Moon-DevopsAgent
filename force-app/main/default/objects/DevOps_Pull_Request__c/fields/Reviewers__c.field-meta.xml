@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reviewers__c</fullName>
+    <label>Reviewers</label>
+    <length>4096</length>
+    <visibleLines>3</visibleLines>
+    <required>false</required>
+    <type>LongTextArea</type>
+</CustomField>

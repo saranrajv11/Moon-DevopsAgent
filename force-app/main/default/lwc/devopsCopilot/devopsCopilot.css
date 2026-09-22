@@ -1,0 +1,402 @@
+/* Layout rules for Lightning app pages, learned the hard way:
+   - no flexbox or grid for structure; SLDS rules interfere
+   - display:table / table-cell is the one safe two-column construct
+   - rows are plain divs of inline-block spans with % widths
+   - never position:fixed or absolute
+   - every text rule sets an explicit colour; inheritance is unreliable */
+
+.root {
+    width: 100%;
+    background-color: #f3f3f3;
+    padding: 8px;
+}
+
+.split {
+    display: table;
+    width: 100%;
+    border-spacing: 12px 0;
+    table-layout: fixed;
+}
+
+.col-chat {
+    display: table-cell;
+    width: 66%;
+    vertical-align: top;
+}
+
+.col-side {
+    display: table-cell;
+    width: 34%;
+    vertical-align: top;
+}
+
+.panel {
+    background-color: #ffffff;
+    border: 1px solid #d8dde6;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.side-panel {
+    position: sticky;
+    top: 0;
+}
+
+.panel-head {
+    background-color: #f7f9fb;
+    border-bottom: 1px solid #d8dde6;
+    padding: 10px 14px;
+}
+
+.head-title {
+    display: inline-block;
+    color: #16325c;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.head-sub {
+    display: inline-block;
+    color: #6b7c93;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+/* ---------------- transcript ---------------- */
+
+.transcript {
+    max-height: calc(100vh - 320px);
+    min-height: 380px;
+    overflow-y: auto;
+    padding: 14px;
+    background-color: #ffffff;
+}
+
+.empty {
+    padding: 24px 6px;
+}
+
+.empty-title {
+    color: #5c6b82;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.sample {
+    display: block;
+    color: #0070d2;
+    font-size: 13px;
+    padding: 7px 10px;
+    margin-bottom: 6px;
+    background-color: #f4f8fd;
+    border: 1px solid #d8e6f5;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.row-user {
+    display: block;
+    text-align: right;
+    margin-bottom: 12px;
+}
+
+.row-agent {
+    display: block;
+    text-align: left;
+    margin-bottom: 12px;
+}
+
+.bubble-user {
+    display: inline-block;
+    max-width: 82%;
+    text-align: left;
+    background-color: #0070d2;
+    border-radius: 8px;
+    padding: 9px 12px;
+}
+
+.bubble-agent {
+    display: inline-block;
+    max-width: 92%;
+    text-align: left;
+    background-color: #f7f9fb;
+    border: 1px solid #e1e6ed;
+    border-radius: 8px;
+    padding: 9px 12px;
+}
+
+.bubble-user .who { color: #cfe4f7; }
+.bubble-agent .who { color: #8a95a5; }
+
+.who {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 4px;
+}
+
+.bubble-user .text-line { color: #ffffff; }
+
+.text-line {
+    display: block;
+    color: #16325c;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Monospace blocks for the environment ladder and log excerpts. */
+.mono-line {
+    display: block;
+    color: #16325c;
+    background-color: #eef2f7;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 6px 8px;
+    border-radius: 4px;
+    margin: 4px 0;
+}
+
+.tool-line {
+    display: block;
+    margin: 2px 0;
+}
+
+.tool-icon {
+    display: inline-block;
+    width: 18px;
+    color: #5c6b82;
+    font-size: 12px;
+}
+
+.tool-name {
+    display: inline-block;
+    color: #5c6b82;
+    font-size: 12px;
+    font-family: "SFMono-Regular", Consolas, monospace;
+}
+
+.thinking {
+    display: block;
+    color: #8a95a5;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* ---------------- confirmation ---------------- */
+
+.confirm {
+    background-color: #fffaf3;
+    border-top: 1px solid #f0c987;
+    border-bottom: 1px solid #f0c987;
+    padding: 12px 14px;
+}
+
+.confirm-title {
+    display: block;
+    color: #8a5300;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.crow {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.ckey {
+    display: inline-block;
+    color: #8a6d3b;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cval {
+    display: inline-block;
+    color: #4a3a1a;
+    font-size: 12px;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.confirm-actions {
+    display: block;
+    margin-top: 10px;
+}
+
+/* ---------------- composer ---------------- */
+
+.composer {
+    border-top: 1px solid #d8dde6;
+    padding: 10px 12px;
+    background-color: #ffffff;
+}
+
+.input {
+    display: inline-block;
+    width: 80%;
+    color: #16325c;
+    background-color: #ffffff;
+    font-size: 13px;
+    padding: 8px 10px;
+    border: 1px solid #c9cfd8;
+    border-radius: 4px;
+}
+
+.input-sm {
+    display: inline-block;
+    width: 62%;
+    color: #16325c;
+    background-color: #ffffff;
+    font-size: 13px;
+    padding: 6px 8px;
+    border: 1px solid #c9cfd8;
+    border-radius: 4px;
+}
+
+.btn-send, .btn-danger, .btn-plain, .btn-plain-sm {
+    display: inline-block;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.btn-send {
+    width: 17%;
+    margin-left: 2%;
+    color: #ffffff;
+    background-color: #0070d2;
+    padding: 8px 0;
+}
+
+.btn-send[disabled] {
+    background-color: #c9cfd8;
+    color: #ffffff;
+    cursor: default;
+}
+
+.btn-danger {
+    color: #ffffff;
+    background-color: #c23934;
+    padding: 7px 16px;
+    margin-right: 8px;
+}
+
+.btn-plain {
+    color: #16325c;
+    background-color: #ffffff;
+    border-color: #c9cfd8;
+    padding: 7px 16px;
+}
+
+.btn-plain-sm {
+    width: 34%;
+    margin-left: 2%;
+    color: #16325c;
+    background-color: #ffffff;
+    border-color: #c9cfd8;
+    padding: 6px 0;
+}
+
+.error {
+    color: #c23934;
+    background-color: #fdeceb;
+    font-size: 12px;
+    padding: 8px 14px;
+    border-top: 1px solid #f5c7c4;
+}
+
+/* ---------------- side panel ---------------- */
+
+.side-body {
+    max-height: calc(100vh - 200px);
+    min-height: 380px;
+    overflow-y: auto;
+    padding: 12px 14px;
+    background-color: #ffffff;
+}
+
+.lookup {
+    display: block;
+    margin-bottom: 14px;
+}
+
+.s-title {
+    display: block;
+    color: #16325c;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.s-overall {
+    display: block;
+    color: #5c6b82;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.s-sub {
+    display: block;
+    color: #8a95a5;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin: 14px 0 6px 0;
+}
+
+.s-empty {
+    display: block;
+    color: #8a95a5;
+    font-size: 12px;
+    padding: 10px 0;
+}
+
+.srow, .erow {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.skey, .elabel {
+    display: inline-block;
+    color: #8a95a5;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sval, .estatus {
+    display: inline-block;
+    color: #16325c;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.eicon {
+    display: inline-block;
+    font-size: 12px;
+    color: #16325c;
+}
+
+.w15 { width: 15%; }
+.w30 { width: 30%; }
+.w35 { width: 35%; }
+.w40 { width: 40%; }
+.w55 { width: 55%; }
+.w60 { width: 60%; }
+.w65 { width: 65%; }

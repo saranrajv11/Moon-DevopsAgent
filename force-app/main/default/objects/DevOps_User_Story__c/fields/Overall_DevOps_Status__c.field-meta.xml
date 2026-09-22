@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Overall_DevOps_Status__c</fullName>
+    <formula>IF(ISPICKVAL(Deployment_Status__c,"Failed"), "❌ Deployment Failed", IF(ISPICKVAL(PR_Status__c,"Merged") &amp;&amp; ISPICKVAL(Deployment_Status__c,"Succeeded"), "✅ Deployed to " &amp; TEXT(Current_Environment__c), IF(ISPICKVAL(PR_Status__c,"Approved"), "⏳ Ready to Deploy", IF(ISPICKVAL(PR_Status__c,"Open"), "👀 In Review", "🛠 In Development"))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Overall DevOps Status</label>
+    <type>Text</type>
+</CustomField>

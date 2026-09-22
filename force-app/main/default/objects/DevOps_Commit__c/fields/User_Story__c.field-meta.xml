@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>User_Story__c</fullName>
+    <label>User Story</label>
+    <referenceTo>DevOps_User_Story__c</referenceTo>
+    <relationshipLabel>Commits</relationshipLabel>
+    <relationshipName>Commits</relationshipName>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
+    <relationshipOrder>0</relationshipOrder>
+    <type>MasterDetail</type>
+</CustomField>

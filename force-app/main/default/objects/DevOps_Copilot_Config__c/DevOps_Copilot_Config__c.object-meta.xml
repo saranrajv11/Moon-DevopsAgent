@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Holds the shared secret the Apex callout presents to the Moon orchestrator. Kept out of source control.</description>
+    <enableFeeds>false</enableFeeds>
+    <label>DevOps Copilot Config</label>
+    <visibility>Protected</visibility>
+</CustomObject>
